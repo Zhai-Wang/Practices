@@ -1,1 +1,1 @@
-include ':commonviewholder'
+include ':commonviewholder', ':myfirstapp'
