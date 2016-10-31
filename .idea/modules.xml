@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Practices.iml" filepath="$PROJECT_DIR$/Practices.iml" />
       <module fileurl="file://$PROJECT_DIR$/commonviewholder/commonviewholder.iml" filepath="$PROJECT_DIR$/commonviewholder/commonviewholder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/topbar/topbar.iml" filepath="$PROJECT_DIR$/topbar/topbar.iml" />
     </modules>
   </component>
 </project>
