@@ -5,24 +5,16 @@
       <GradleProjectSettings>
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="D:\android-studio\gradle\gradle-2.14.1" />
+        <option name="gradleHome" value="E:\AndroidStudio\gradle\gradle-2.14.1" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/commonviewholder" />
-              <option value="$PROJECT_DIR$/myfirstapp" />
-              <option value="$PROJECT_DIR$/topbar" />
+            <option value="$PROJECT_DIR$/myfirstapp" />
+            <option value="$PROJECT_DIR$/topbar" />
           </set>
         </option>
-        <option name="myModules">
-          <set>
-            <option value="$PROJECT_DIR$" />
-              <option name="resolveModulePerSourceSet" value="false" />
-              <option value="$PROJECT_DIR$/topbar" />
-
-              <option value="$PROJECT_DIR$/commonviewholder" />
-          </set>
-        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
