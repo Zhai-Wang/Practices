@@ -10,10 +10,19 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/commonviewholder" />
-            <option value="$PROJECT_DIR$/myfirstapp" />
+              <option value="$PROJECT_DIR$/myfirstapp" />
+              <option value="$PROJECT_DIR$/topbar" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+              <option name="resolveModulePerSourceSet" value="false" />
+              <option value="$PROJECT_DIR$/topbar" />
+
+              <option value="$PROJECT_DIR$/commonviewholder" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>
