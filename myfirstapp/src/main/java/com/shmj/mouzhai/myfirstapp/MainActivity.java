@@ -1,6 +1,7 @@
 package com.shmj.mouzhai.myfirstapp;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,6 +15,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setUpActionBar();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        android.os.Debug.stopMethodTracing();
     }
 
     public void sendMessage(View view) {
@@ -24,4 +33,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void setUpActionBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            android.app.ActionBar actionBar = getActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(false);
+            }
+        }
+    }
 }
