@@ -1,5 +1,6 @@
 package com.shmj.mouzhai.festivalsms.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.shmj.mouzhai.festivalsms.Bean.Festival;
 import com.shmj.mouzhai.festivalsms.Bean.FestivalLab;
+import com.shmj.mouzhai.festivalsms.ChooseMsgActivity;
 import com.shmj.mouzhai.festivalsms.R;
 
 /**
@@ -27,6 +29,7 @@ public class FestivalCategoryFragment extends Fragment {
     private GridView mGridView;
     private ArrayAdapter<Festival> mAdapter;
     private LayoutInflater mInflater;
+    public static final String ID_FESTIVAL = "festival_id";
 
     @Nullable
     @Override
@@ -38,7 +41,7 @@ public class FestivalCategoryFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mInflater = LayoutInflater.from(getActivity());
         mGridView = (GridView) view.findViewById(R.id.gv_festival_category);
-        mAdapter = new ArrayAdapter<Festival>(getActivity(), -1, FestivalLab.getInstance().getmList()){
+        mAdapter = new ArrayAdapter<Festival>(getActivity(), -1, FestivalLab.getInstance().getFestivals()){
             @NonNull
             @Override
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -54,7 +57,9 @@ public class FestivalCategoryFragment extends Fragment {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //Todo
+                Intent intent = new Intent(getActivity(), ChooseMsgActivity.class);
+                intent.putExtra(ID_FESTIVAL, mAdapter.getItem(i).getId());
+                startActivity(intent);
             }
         });
     }
