@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 短信内容实体类
+ * <p>
  * Created by Mouzhai on 2016/11/16.
  */
 

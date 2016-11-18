@@ -16,8 +16,6 @@ import com.shmj.mouzhai.festivalsms.Bean.FestivalLab;
 import com.shmj.mouzhai.festivalsms.Bean.Msg;
 import com.shmj.mouzhai.festivalsms.Fragment.FestivalCategoryFragment;
 
-import java.util.List;
-
 public class ChooseMsgActivity extends AppCompatActivity {
 
     private ListView mLvMsg;
@@ -43,22 +41,22 @@ public class ChooseMsgActivity extends AppCompatActivity {
         fabToSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 2016/11/18  
+                SendMsgActivity.toActivity(ChooseMsgActivity.this, mFestivalId, -1);
             }
         });
     }
 
     private void initView() {
         mLvMsg = (ListView) findViewById(R.id.lv_msg);
-        fabToSend = (FloatingActionButton) findViewById(R.id.fab_send_sms);
+        fabToSend = (FloatingActionButton) findViewById(R.id.fab_to_send);
 
         mLvMsg.setAdapter(mAdapter = new ArrayAdapter<Msg>(this, -1,
-                FestivalLab.getInstance().getMsgsByFestivalId(mFestivalId)){
+                FestivalLab.getInstance().getMsgsByFestivalId(mFestivalId)) {
             @SuppressWarnings("ConstantConditions")
             @NonNull
             @Override
-            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                if(convertView == null){
+            public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
+                if (convertView == null) {
                     convertView = mInflater.inflate(R.layout.item_lv_msg, parent, false);
                 }
                 TextView tvContent = (TextView) convertView.findViewById(R.id.tv_msg_content);
@@ -68,7 +66,7 @@ public class ChooseMsgActivity extends AppCompatActivity {
                 btnToSend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // TODO: 2016/11/18
+                        SendMsgActivity.toActivity(ChooseMsgActivity.this, mFestivalId, getItem(position).getId());
                     }
                 });
                 return convertView;
