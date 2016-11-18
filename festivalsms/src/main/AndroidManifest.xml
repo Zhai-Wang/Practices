@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.shmj.mouzhai.festivalsms">
+    
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -18,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChooseMsgActivity" />
-        <activity android:name=".SendMsgActivity"></activity>
+        <activity android:name=".SendMsgActivity"/>
     </application>
 
 </manifest>
