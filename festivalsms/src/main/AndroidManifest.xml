@@ -24,6 +24,10 @@
         </activity>
         <activity android:name=".ChooseMsgActivity" />
         <activity android:name=".SendMsgActivity"/>
+        
+        <provider
+            android:authorities="com.shmj.mouzhai.festivalsms.db.SmsProvider"
+            android:name=".db.SmsProvider"/>
     </application>
 
 </manifest>

@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.shmj.mouzhai.festivalsms.Bean.Festival;
 import com.shmj.mouzhai.festivalsms.Bean.FestivalLab;
 import com.shmj.mouzhai.festivalsms.Bean.Msg;
+import com.shmj.mouzhai.festivalsms.Bean.SendedMsg;
 import com.shmj.mouzhai.festivalsms.biz.SmsBiz;
 import com.shmj.mouzhai.festivalsms.view.FlowLayout;
 
@@ -56,7 +57,7 @@ public class SendMsgActivity extends AppCompatActivity {
 
     private Festival festival;
     private Msg msg;
-    private SmsBiz smsBiz = new SmsBiz();
+    private SmsBiz smsBiz;
 
     private HashSet<String> mContactNames = new HashSet<>();
     private HashSet<String> mContactNums = new HashSet<>();
@@ -132,9 +133,26 @@ public class SendMsgActivity extends AppCompatActivity {
                 }
                 layoutLoading.setVisibility(View.VISIBLE);
                 mSendMsgCount = 0;
-                mTotalCount = smsBiz.sendMsg(mContactNums, msg, mSendPendingIntent, mDeliverPendingIntent);
+                mTotalCount = smsBiz.sendMsg(mContactNums, buildSenedMsg(msg), mSendPendingIntent, mDeliverPendingIntent);
             }
         });
+    }
+
+    private SendedMsg buildSenedMsg(String msg) {
+        SendedMsg sendedMsg = new SendedMsg();
+        sendedMsg.setMsg(msg);
+        sendedMsg.setFestivalName(festival.getName());
+        String names = "";
+        for (String name : mContactNames) {
+            names += name + ":";
+        }
+        sendedMsg.setName(names.substring(0, names.length() - 1));
+        String numbers = "";
+        for (String number : mContactNums) {
+            numbers += number + ":";
+        }
+        sendedMsg.setNumber(numbers.substring(0, numbers.length() - 1));
+        return sendedMsg;
     }
 
     private void initView() {
@@ -154,6 +172,7 @@ public class SendMsgActivity extends AppCompatActivity {
     }
 
     private void initData() {
+        smsBiz = new SmsBiz(this);
         mFestivalId = getIntent().getIntExtra(FESTIVAL_ID, -1);
         mMsgId = getIntent().getIntExtra(MSG_ID, -1);
         festival = FestivalLab.getInstance().getFestivalById(mFestivalId);

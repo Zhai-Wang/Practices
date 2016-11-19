@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.shmj.mouzhai.festivalsms.Fragment.FestivalCategoryFragment;
+import com.shmj.mouzhai.festivalsms.Fragment.SmsHistoryFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
+                if(position == 1){
+                    return new SmsHistoryFragment();
+                }
                 return new FestivalCategoryFragment();
             }
 

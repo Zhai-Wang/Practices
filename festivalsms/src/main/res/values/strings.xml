@@ -4,4 +4,7 @@
     <string name="add_contracts">添加联系人</string>
     <string name="sending">发送中……</string>
     <string name="empty_content">请输入内容</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
