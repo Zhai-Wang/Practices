@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ScrollerViewMenu</string>
+    <string name="first_item">第一个 Item</string>
+    <string name="second_item">第二个 Item</string>
+    <string name="third_item">第三个 Item</string>
+    <string name="forth_item">第四个 Item</string>
+    <string name="fifth_item">第五个 Item</string>
+</resources>
