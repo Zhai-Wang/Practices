@@ -2,6 +2,7 @@ package com.shmj.mouzhai.scrollerviewmenu.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -11,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import com.nineoldandroids.view.ViewHelper;
 import com.shmj.mouzhai.scrollerviewmenu.R;
 
 /**
@@ -149,5 +151,29 @@ public class SlidingMenu extends HorizontalScrollView {
         } else {
             openMenu();
         }
+    }
+
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        //通过监听滚动状态，动态改变子 view 的偏移量，来实现抽屉式侧滑效果
+//        ViewHelper.setTranslationX(mMenu, l);//兼容 2.0
+//        mMenu.setTranslationX(l);//兼容 3.0
+
+        //内容区域随着滑动改变大小的动画效果
+        float scale = l * 1.0f / mMenuWidth;
+        float rightScale = 0.7f + 0.3f * scale;
+        ViewHelper.setPivotX(mContent, 0);
+        ViewHelper.setPivotY(mContent, mContent.getHeight()/2);
+        ViewHelper.setScaleX(mContent, rightScale);
+        ViewHelper.setScaleY(mContent, rightScale);
+
+        //菜单区域随滑动改变大小与透明度
+        float leftScale = 1.0f - scale * 0.3f;
+        float leftAlpha = 0.6f + 0.4f * (1 - scale);
+        ViewHelper.setTranslationX(mMenu, l * 0.5f);
+        ViewHelper.setScaleX(mMenu, leftScale);
+        ViewHelper.setScaleY(mMenu, leftScale);
+        ViewHelper.setAlpha(mMenu, leftAlpha);
     }
 }

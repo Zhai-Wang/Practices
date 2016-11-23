@@ -5,6 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/img_frame_background"
     tools:context="com.shmj.mouzhai.scrollerviewmenu.MainActivity">
 
     <com.shmj.mouzhai.scrollerviewmenu.view.SlidingMenu
