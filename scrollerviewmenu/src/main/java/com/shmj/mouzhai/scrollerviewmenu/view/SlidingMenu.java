@@ -1,6 +1,7 @@
 package com.shmj.mouzhai.scrollerviewmenu.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+
+import com.shmj.mouzhai.scrollerviewmenu.R;
 
 /**
  * 自定义侧滑菜单
@@ -24,24 +27,49 @@ public class SlidingMenu extends HorizontalScrollView {
     private int mScreenWidth;
     private int mMenuWidth;
 
-    private int mMenuRightPadding = 50;//菜单距离右侧边距，单位 dp
+    private int mMenuRightPadding;
 
     private boolean once = false;
+
+    public SlidingMenu(Context context) {
+        this(context, null);
+    }
 
     /**
      * 未设置自定义属性时，默认调用
      */
     public SlidingMenu(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
+    }
+
+    /**
+     * 使用了自定义属性时，调用此构造方法
+     */
+    public SlidingMenu(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+
+        //获取自定义属性
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs,
+                R.styleable.SlidingMenu, defStyleAttr, 0);
+        int n = typedArray.getIndexCount();
+        for (int i = 0; i < n; i++) {
+            int attr = typedArray.getIndex(i);
+            switch (attr) {
+                case R.styleable.SlidingMenu_rightPadding:
+                    //默认的距离
+                    //将 dp 转化为像素值
+                    int defaultPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                            50, context.getResources().getDisplayMetrics());
+                    mMenuRightPadding = typedArray.getDimensionPixelSize(attr, defaultPadding);
+                    break;
+            }
+        }
+        typedArray.recycle();
 
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
         mScreenWidth = displayMetrics.widthPixels;
-
-        //将 dp 转化为像素值
-        mMenuRightPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50,
-                context.getResources().getDisplayMetrics());
     }
 
     /**
@@ -61,6 +89,7 @@ public class SlidingMenu extends HorizontalScrollView {
     }
 
     /**
+     * 决定子 view 的位置
      * 设置偏移量来隐藏 menu
      */
     @Override
@@ -77,7 +106,7 @@ public class SlidingMenu extends HorizontalScrollView {
         switch (action) {
             case MotionEvent.ACTION_UP:
                 int scrollX = getScrollX();//隐藏在屏幕左侧之外的宽度
-                //如果显示宽度大于一半则显示全部内容，否则隐藏
+                //如果隐藏宽度大于一半则隐藏 menu，否则显示
                 if (scrollX >= mMenuWidth / 2) {
                     this.smoothScrollTo(mMenuWidth, 0);
                 } else {
