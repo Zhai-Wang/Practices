@@ -5,4 +5,5 @@
     <string name="third_item">第三个 Item</string>
     <string name="forth_item">第四个 Item</string>
     <string name="fifth_item">第五个 Item</string>
+    <string name="toggle_menu">切换菜单</string>
 </resources>
