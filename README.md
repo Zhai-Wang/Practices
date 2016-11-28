@@ -7,3 +7,10 @@
 ##[自定义侧滑菜单](https://github.com/Zhai-Wang/Practices/tree/master/scrollerviewmenu/src/main)
 用 HorizontalScrollView 实现抽屉式侧滑菜单效果
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/scrollerviewmenu/screenshoots/2.gif">
+
+##[节日祝福短信 Demo](https://github.com/Zhai-Wang/Practices/tree/master/festivalsms/src/main)
+一个快速发送祝福短信的小 Demo
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/festivalsms/screenshoots/device-2016-11-24-110800.png" width="10%" height="10%">
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/festivalsms/screenshoots/device-2016-11-24-110844.png" width="10%" height="10%">
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/festivalsms/screenshoots/device-2016-11-24-110903.png" width="10%" height="10%">
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/festivalsms/screenshoots/device-2016-11-24-110923.png" width="10%" height="10%">
