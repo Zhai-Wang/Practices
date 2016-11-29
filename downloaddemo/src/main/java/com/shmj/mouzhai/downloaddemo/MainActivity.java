@@ -1,6 +1,9 @@
 package com.shmj.mouzhai.downloaddemo;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,15 +16,26 @@ import com.shmj.mouzhai.downloaddemo.services.DownloadService;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tvFileName;
     private ProgressBar pbProgress;
     private Button btnStart;
     private Button btnStop;
 
-    private  FileInfo fileInfo;
+    private FileInfo fileInfo;
 
-    public static final String FILE_URL = "http://music.163.com/api/pc/download/latest";
-    public static final String FILE_NAME = "cloudmusicsetup_2_1_1[161566].exe";
+    public static final String FILE_URL =
+            "http://www.imooc.com/mobile/mukewang.apk";
+    public static final String FILE_NAME = "mukewang.apk";
+
+    //更新 UI 的广播接收器
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(DownloadService.ACTION_UPDATE.equals(intent.getAction())){
+                int finished = intent.getIntExtra("finished", 0);
+                pbProgress.setProgress(finished);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +46,27 @@ public class MainActivity extends AppCompatActivity {
         initEvents();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
     private void initView() {
-        tvFileName = (TextView) findViewById(R.id.tv_file_name);
         pbProgress = (ProgressBar) findViewById(R.id.pb_progress);
         btnStart = (Button) findViewById(R.id.btn_start);
         btnStop = (Button) findViewById(R.id.btn_stop);
     }
 
     private void initDatas() {
-       fileInfo = new FileInfo(0, FILE_URL, FILE_NAME, 0, 0);
+        fileInfo = new FileInfo(0, FILE_URL, FILE_NAME, 0, 0);
+
+        pbProgress.setMax(100);
+
+        //注册广播接收器
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(DownloadService.ACTION_UPDATE);
+        registerReceiver(receiver, intentFilter);
     }
 
     private void initEvents() {

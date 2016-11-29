@@ -27,9 +27,14 @@ public class DownloadService extends Service {
 
     public static final String DOWNLOAD_PATH =
             Environment.getExternalStorageDirectory().getAbsolutePath() + "/downloads/";
+
     public static final String ACTION_START = "ACTION_START";
     public static final String ACTION_STOP = "ACTION_STOP";
+    public static final String ACTION_UPDATE = "ACTION_UPDATE";
+
     public static final int MSG_INIT = 0;
+
+    private DownloadTask task;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -37,11 +42,16 @@ public class DownloadService extends Service {
         if (ACTION_START.equals(intent.getAction())) {
             FileInfo fileInfo = (FileInfo) intent.getSerializableExtra("fileInfo");
             Log.e("test", "start : " + fileInfo.toString());
+            if (task != null)
+                task.isPause = false;
             //启动线程
             new InitThread(fileInfo).start();
         } else if (ACTION_STOP.equals(intent.getAction())) {
             FileInfo fileInfo = (FileInfo) intent.getSerializableExtra("fileInfo");
             Log.e("test", "stop : " + fileInfo.toString());
+            if (task != null) {
+                task.isPause = true;
+            }
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -59,6 +69,9 @@ public class DownloadService extends Service {
                 case MSG_INIT:
                     FileInfo fileInfo = (FileInfo) msg.obj;
                     Log.e("test", "Init: " + fileInfo.toString());
+                    //启动下载任务
+                    task = new DownloadTask(DownloadService.this, fileInfo);
+                    task.download();
                     break;
             }
         }
@@ -74,6 +87,7 @@ public class DownloadService extends Service {
             this.mFileInfo = mFileInfo;
         }
 
+        @Override
         public void run() {
             HttpURLConnection connection = null;
             RandomAccessFile randomAccessFile = null;
@@ -81,10 +95,10 @@ public class DownloadService extends Service {
                 //连接网络文件
                 URL url = new URL(mFileInfo.getUrl());
                 connection = (HttpURLConnection) url.openConnection();
-                connection.setConnectTimeout(8000);
+                connection.setConnectTimeout(3000);
                 connection.setRequestMethod("GET");
                 int length = -1;
-                if (connection.getResponseCode() == 200) {
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     //获得文件长度
                     length = connection.getContentLength();
                 }
