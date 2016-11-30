@@ -14,11 +14,7 @@ public class ThreadInfo {
     private int end;
     private int finished;
 
-    public ThreadInfo() {
-    }
-
     public ThreadInfo(int id, String url, int start, int end, int finished) {
-
         this.id = id;
         this.url = url;
         this.start = start;
@@ -27,7 +23,6 @@ public class ThreadInfo {
     }
 
     public int getId() {
-
         return id;
     }
 

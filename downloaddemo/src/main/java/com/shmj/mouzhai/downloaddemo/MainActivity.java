@@ -22,15 +22,14 @@ public class MainActivity extends AppCompatActivity {
 
     private FileInfo fileInfo;
 
-    public static final String FILE_URL =
-            "http://www.imooc.com/mobile/mukewang.apk";
+    public static final String FILE_URL = "http://www.imooc.com/mobile/mukewang.apk";
     public static final String FILE_NAME = "mukewang.apk";
 
     //更新 UI 的广播接收器
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(DownloadService.ACTION_UPDATE.equals(intent.getAction())){
+            if (DownloadService.ACTION_UPDATE.equals(intent.getAction())) {
                 int finished = intent.getIntExtra("finished", 0);
                 pbProgress.setProgress(finished);
             }

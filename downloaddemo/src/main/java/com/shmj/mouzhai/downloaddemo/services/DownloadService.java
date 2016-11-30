@@ -42,8 +42,6 @@ public class DownloadService extends Service {
         if (ACTION_START.equals(intent.getAction())) {
             FileInfo fileInfo = (FileInfo) intent.getSerializableExtra("fileInfo");
             Log.e("test", "start : " + fileInfo.toString());
-            if (task != null)
-                task.isPause = false;
             //启动线程
             new InitThread(fileInfo).start();
         } else if (ACTION_STOP.equals(intent.getAction())) {
@@ -59,29 +57,29 @@ public class DownloadService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        throw new UnsupportedOperationException("Not yet implemented");
     }
-
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_INIT:
-                    FileInfo fileInfo = (FileInfo) msg.obj;
-                    Log.e("test", "Init: " + fileInfo.toString());
-                    //启动下载任务
-                    task = new DownloadTask(DownloadService.this, fileInfo);
-                    task.download();
-                    break;
-            }
-        }
-    };
 
     /**
      * 初始化子线程
      */
     class InitThread extends Thread {
         private FileInfo mFileInfo = null;
+
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case MSG_INIT:
+                        FileInfo fileInfo = (FileInfo) msg.obj;
+                        Log.e("test", "Init: " + fileInfo.toString());
+                        //启动下载任务
+                        task = new DownloadTask(DownloadService.this, fileInfo);
+                        task.download();
+                        break;
+                }
+            }
+        };
 
         public InitThread(FileInfo mFileInfo) {
             this.mFileInfo = mFileInfo;
