@@ -7,42 +7,10 @@
     android:orientation="vertical"
     tools:context="com.shmj.mouzhai.downloaddemo.MainActivity">
 
-    <TextView
-        android:id="@+id/tv_file_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/downloading"
-        android:textSize="20sp" />
-
-    <ProgressBar
-        android:id="@+id/pb_progress"
-        style="?android:attr/progressBarStyleHorizontal"
+    <ListView
+        android:id="@+id/lv_file"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginTop="10dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
-
-        <Button
-            android:id="@+id/btn_start"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/start" />
-
-        <Button
-            android:id="@+id/btn_stop"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/stop" />
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:padding="10dp" />
 
 </LinearLayout>
