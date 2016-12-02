@@ -20,7 +20,7 @@ public class ThreadPortImpl implements ThreadPort {
     private MyDBHelper myDBHelper = null;
 
     public ThreadPortImpl(Context context) {
-        myDBHelper = new MyDBHelper(context);
+        myDBHelper = MyDBHelper.getInstance(context);
     }
 
     @Override
@@ -34,15 +34,15 @@ public class ThreadPortImpl implements ThreadPort {
     }
 
     @Override
-    public void deleteThread(String url, int thread_id) {
+    public synchronized void deleteThread(String url) {
         SQLiteDatabase database = myDBHelper.getWritableDatabase();
-        database.execSQL("delete from thread_info where url = ? and thread_id = ?",
-                new Object[]{url, thread_id});
+        database.execSQL("delete from thread_info where url = ?",
+                new Object[]{url});
         database.close();
     }
 
     @Override
-    public void updateThread(String url, int thread_id, int finished) {
+    public synchronized void updateThread(String url, int thread_id, int finished) {
         SQLiteDatabase database = myDBHelper.getWritableDatabase();
         database.execSQL("update thread_info set finished = ? where url = ? and thread_id = ?",
                 new Object[]{finished, url, thread_id});
@@ -51,7 +51,7 @@ public class ThreadPortImpl implements ThreadPort {
 
     @Override
     public List<ThreadInfo> getThreads(String url) {
-        SQLiteDatabase database = myDBHelper.getWritableDatabase();
+        SQLiteDatabase database = myDBHelper.getReadableDatabase();
         List<ThreadInfo> list = new ArrayList<>();
         Cursor cursor = database.rawQuery("select * from thread_info where url = ?",
                 new String[]{url});
@@ -71,7 +71,7 @@ public class ThreadPortImpl implements ThreadPort {
 
     @Override
     public boolean isExists(String url, int thread_id) {
-        SQLiteDatabase database = myDBHelper.getWritableDatabase();
+        SQLiteDatabase database = myDBHelper.getReadableDatabase();
         Cursor cursor = database.rawQuery(
                 "select * from thread_info where url = ? and thread_id = ?",
                 new String[]{url, thread_id + ""});

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shmj.mouzhai.downloaddemo.adapter.FileListAdapter;
 import com.shmj.mouzhai.downloaddemo.entities.FileInfo;
@@ -41,7 +42,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (DownloadService.ACTION_UPDATE.equals(intent.getAction())) {
+                //更新进度条
                 int finished = intent.getIntExtra("finished", 0);
+                int id = intent.getIntExtra("id", 0);
+                fileListAdapter.updateProgress(id, finished);
+            } else if (DownloadService.ACTION_FINISHED.equals(intent.getAction())) {
+                //结束进度，更新进度为0
+                FileInfo fileInfo = (FileInfo) intent.getSerializableExtra("fileInfo");
+                fileListAdapter.updateProgress(fileInfo.getId(), 0);
+                Toast.makeText(MainActivity.this, fileInfo.getFileName() + "下载完毕", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -85,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         //注册广播接收器
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DownloadService.ACTION_UPDATE);
+        intentFilter.addAction(DownloadService.ACTION_FINISHED);
         registerReceiver(receiver, intentFilter);
     }
 

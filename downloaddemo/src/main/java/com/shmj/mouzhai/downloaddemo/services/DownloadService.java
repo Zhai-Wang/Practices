@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 下载服务与下载子线程
@@ -31,24 +33,28 @@ public class DownloadService extends Service {
     public static final String ACTION_START = "ACTION_START";
     public static final String ACTION_STOP = "ACTION_STOP";
     public static final String ACTION_UPDATE = "ACTION_UPDATE";
-
+    public static final String ACTION_FINISHED = "ACTION_FINISHED";
     public static final int MSG_INIT = 0;
 
     private DownloadTask task;
+    //下载任务集合
+    private Map<Integer, DownloadTask> tasks = new LinkedHashMap<>();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //获得 Activity 传来的参数
         if (ACTION_START.equals(intent.getAction())) {
             FileInfo fileInfo = (FileInfo) intent.getSerializableExtra("fileInfo");
-            Log.e("test", "start : " + fileInfo.toString());
             //启动线程
-            new InitThread(fileInfo).start();
+            InitThread initThread = new InitThread(fileInfo);
+            DownloadTask.executorService.execute(initThread);
         } else if (ACTION_STOP.equals(intent.getAction())) {
+            //暂停下载
+            //从集合中取出下载任务
             FileInfo fileInfo = (FileInfo) intent.getSerializableExtra("fileInfo");
-            Log.e("test", "stop : " + fileInfo.toString());
-            if (task != null) {
-                task.isPause = true;
+            DownloadTask downloadTask = tasks.get(fileInfo.getId());
+            if (downloadTask != null) {
+                downloadTask.isPause = true;
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -74,8 +80,10 @@ public class DownloadService extends Service {
                         FileInfo fileInfo = (FileInfo) msg.obj;
                         Log.e("test", "Init: " + fileInfo.toString());
                         //启动下载任务
-                        task = new DownloadTask(DownloadService.this, fileInfo);
+                        task = new DownloadTask(DownloadService.this, fileInfo, 3);
                         task.download();
+                        //把下载任务添加到集合中
+                        tasks.put(fileInfo.getId(), task);
                         break;
                 }
             }
@@ -123,7 +131,9 @@ public class DownloadService extends Service {
                     if (connection != null) {
                         connection.disconnect();
                     }
-                    randomAccessFile.close();
+                    if (randomAccessFile != null) {
+                        randomAccessFile.close();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -50,6 +50,7 @@ public class FileListAdapter extends BaseAdapter implements View.OnClickListener
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        fileInfo = fileInfos.get(i);
         ViewHolder viewHolder;
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.item_main, viewGroup, false);
@@ -60,18 +61,16 @@ public class FileListAdapter extends BaseAdapter implements View.OnClickListener
             viewHolder.btnStop = (Button) view.findViewById(R.id.btn_stop);
             viewHolder.pbProgress = (ProgressBar) view.findViewById(R.id.pb_progress);
 
+            viewHolder.tvFileName.setText(fileInfo.getFileName());
+            viewHolder.pbProgress.setMax(100);
+            viewHolder.btnStart.setOnClickListener(this);
+            viewHolder.btnStop.setOnClickListener(this);
+
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-
-        fileInfo = fileInfos.get(i);
-        viewHolder.tvFileName.setText(fileInfo.getFileName());
-        viewHolder.pbProgress.setMax(100);
         viewHolder.pbProgress.setProgress(fileInfo.getFinished());
-        viewHolder.btnStart.setOnClickListener(this);
-        viewHolder.btnStop.setOnClickListener(this);
-
         return view;
     }
 
@@ -91,6 +90,15 @@ public class FileListAdapter extends BaseAdapter implements View.OnClickListener
                 context.startService(stopIntent);
                 break;
         }
+    }
+
+    /**
+     * 更新列表项中的进度条
+     */
+    public void updateProgress(int id, int progress){
+        FileInfo fileInfo = fileInfos.get(id);
+        fileInfo.setFinished(progress);
+        notifyDataSetChanged();
     }
 
     private static class ViewHolder {

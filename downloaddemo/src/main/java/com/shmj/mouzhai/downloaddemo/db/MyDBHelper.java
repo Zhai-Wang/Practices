@@ -12,6 +12,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MyDBHelper extends SQLiteOpenHelper {
 
+    private static MyDBHelper myDBHelper;
+
     private static final String DB_NAME = "download.db";
     private static final int VERSION = 1;
     private static final String SQL_CREATE = "create table thread_info (" +
@@ -23,8 +25,15 @@ public class MyDBHelper extends SQLiteOpenHelper {
             " finished integer)";
     private static final String SQL_DROP = "drop table if exists thread_info";
 
-    public MyDBHelper(Context context) {
+    private MyDBHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
+    }
+
+    public static MyDBHelper getInstance(Context context){
+        if(myDBHelper == null){
+            myDBHelper = new MyDBHelper(context);
+        }
+        return myDBHelper;
     }
 
     @Override
