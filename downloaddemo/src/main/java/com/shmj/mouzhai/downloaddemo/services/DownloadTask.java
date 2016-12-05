@@ -3,7 +3,6 @@ package com.shmj.mouzhai.downloaddemo.services;
 import android.content.Context;
 import android.content.Intent;
 
-import com.shmj.mouzhai.downloaddemo.db.ThreadPort;
 import com.shmj.mouzhai.downloaddemo.db.ThreadPortImpl;
 import com.shmj.mouzhai.downloaddemo.entities.FileInfo;
 import com.shmj.mouzhai.downloaddemo.entities.ThreadInfo;
@@ -28,7 +27,7 @@ import java.util.concurrent.Executors;
 public class DownloadTask {
     private Context context;
     private FileInfo fileInfo;
-    private ThreadPort threadPort;
+    private ThreadPortImpl threadPortImpl;
 
     private int finished = 0;
     private int threadCount = 1;//线程数量
@@ -41,12 +40,12 @@ public class DownloadTask {
         this.context = context;
         this.fileInfo = fileInfo;
         this.threadCount = threadCount;
-        threadPort = new ThreadPortImpl(context);
+        threadPortImpl = new ThreadPortImpl(context);
     }
 
     public void download() {
         //读取数据库的连接信息
-        List<ThreadInfo> threadInfos = threadPort.getThreads(fileInfo.getUrl());
+        List<ThreadInfo> threadInfos = threadPortImpl.getThreads(fileInfo.getUrl());
         if (threadInfos.size() == 0) {
             //每个线程的下载进度
             int length = fileInfo.getLength() / threadCount;
@@ -60,7 +59,7 @@ public class DownloadTask {
                 //添加线程信息
                 threadInfos.add(threadInfo);
                 //向数据库插入线程信息
-                threadPort.insertThread(threadInfo);
+                threadPortImpl.insertThread(threadInfo);
             }
             //开始进行多线程下载
             downloadThreads = new ArrayList<>();
@@ -87,7 +86,7 @@ public class DownloadTask {
         }
         if (allFinished) {
             //删除线程信息
-            threadPort.deleteThread(fileInfo.getUrl());
+            threadPortImpl.deleteThread(fileInfo.getUrl());
             //发送广播，通知 UI 任务执行完毕
             Intent intent = new Intent(DownloadService.ACTION_FINISHED);
             intent.putExtra("fileInfo", fileInfo);
@@ -98,18 +97,18 @@ public class DownloadTask {
     /**
      * 下载线程
      */
-    class DownloadThread extends Thread {
+    private class DownloadThread extends Thread {
         private ThreadInfo mThreadInfo;
 
         private boolean isFinished = false;
 
+        DownloadThread(ThreadInfo threadInfo) {
+            this.mThreadInfo = threadInfo;
+        }
+
         HttpURLConnection connection;
         RandomAccessFile randomAccessFile;
         InputStream inputStream;
-
-        public DownloadThread(ThreadInfo threadInfo) {
-            this.mThreadInfo = threadInfo;
-        }
 
         @Override
         public void run() {
@@ -119,7 +118,7 @@ public class DownloadTask {
                 connection.setConnectTimeout(3000);
                 connection.setRequestMethod("GET");
                 //设置下载位置
-                int start = mThreadInfo.getStart() + mThreadInfo.getFinished();
+                long start = mThreadInfo.getStart() + mThreadInfo.getFinished();
                 connection.setRequestProperty("Range", "bytes = " + start + "-" + mThreadInfo.getEnd());
                 //设置文件写入位置
                 File file = new File(DownloadService.DOWNLOAD_PATH, fileInfo.getFileName());
@@ -127,7 +126,7 @@ public class DownloadTask {
                 randomAccessFile.seek(start);
 
                 Intent intent = new Intent(DownloadService.ACTION_UPDATE);
-                finished += fileInfo.getFinished();
+                finished += mThreadInfo.getFinished();
                 //开始下载
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_PARTIAL ||
                         connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
@@ -137,6 +136,12 @@ public class DownloadTask {
                     int len;
                     long time = System.currentTimeMillis();
                     while ((len = inputStream.read(buffer)) != -1) {
+                        //在下载暂停时保存进度
+                        if (isPause) {
+                            threadPortImpl.updateThread(fileInfo.getUrl(), fileInfo.getId(),
+                                    mThreadInfo.getFinished());
+                            return;
+                        }
                         //写入文件
                         randomAccessFile.write(buffer, 0, len);
                         //整个文件的完成进度
@@ -146,15 +151,9 @@ public class DownloadTask {
                         //把下载进度发送广播给 Activity
                         if (System.currentTimeMillis() - time > 1000) {
                             time = System.currentTimeMillis();
-                            intent.putExtra("finished", (int) (finished * 100.0 / fileInfo.getLength()));
+                            intent.putExtra("finished", finished * 100 / fileInfo.getLength());
                             intent.putExtra("id", fileInfo.getId());
                             context.sendBroadcast(intent);
-                        }
-                        //在下载暂停时保存进度
-                        if (isPause) {
-                            threadPort.updateThread(fileInfo.getUrl(), fileInfo.getId(),
-                                    mThreadInfo.getFinished());
-                            return;
                         }
                     }
                     //标识线程下载完毕

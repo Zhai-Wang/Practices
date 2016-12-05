@@ -36,7 +36,6 @@ public class DownloadService extends Service {
     public static final String ACTION_FINISHED = "ACTION_FINISHED";
     public static final int MSG_INIT = 0;
 
-    private DownloadTask task;
     //下载任务集合
     private Map<Integer, DownloadTask> tasks = new LinkedHashMap<>();
 
@@ -80,7 +79,7 @@ public class DownloadService extends Service {
                         FileInfo fileInfo = (FileInfo) msg.obj;
                         Log.e("test", "Init: " + fileInfo.toString());
                         //启动下载任务
-                        task = new DownloadTask(DownloadService.this, fileInfo, 3);
+                        DownloadTask task = new DownloadTask(DownloadService.this, fileInfo, 3);
                         task.download();
                         //把下载任务添加到集合中
                         tasks.put(fileInfo.getId(), task);
@@ -114,7 +113,9 @@ public class DownloadService extends Service {
                 //创建文件目录
                 File dir = new File(DOWNLOAD_PATH);
                 if (!dir.exists()) {
-                    dir.mkdir();
+                    if(!dir.mkdir()){
+                        return;
+                    }
                 }
                 //在本地创建文件
                 File file = new File(dir, mFileInfo.getFileName());

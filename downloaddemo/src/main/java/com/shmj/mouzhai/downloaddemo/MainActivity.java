@@ -24,14 +24,14 @@ public class MainActivity extends AppCompatActivity {
     private FileInfo fileInfo, fileInfo1, fileInfo2, fileInfo3;
     private FileListAdapter fileListAdapter;
 
-    public static final String FILE_URL = "http:www.imooc.com/mobile/imooc.apk";
-    public static final String FILE_URL1 = "http:www.imooc.com/download/Activator.exe";
-    public static final String FILE_URL2 = "http:www.imooc.com/download/iTunes64Setup.exe";
-    public static final String FILE_URL3 = "http:www.imooc.com/download/BaiduPlayerNetSetup_100.exe";
+    public static final String FILE_URL = "http://www.imooc.com/mobile/mukewang.apk";
+    public static final String FILE_URL1 = "http://music.163.com/api/android/download/latest2";
+    public static final String FILE_URL2 = "http://dlsw.baidu.com/sw-search-sp/soft/91/14506/wdj2.80.0.7144.1437707943.exe";
+    public static final String FILE_URL3 = "http://sw.bos.baidu.com/sw-search-sp/software/dd98d1b0b1a7c/GoogleEarth_7.1.7.2606.exe";
     public static final String FILE_NAME = "imooc.apk";
-    public static final String FILE_NAME1 = "Activator.exe";
-    public static final String FILE_NAME2 = "iTunes64Setup.exe";
-    public static final String FILE_NAME3 = "BaiduPlayerNetSetup_100.exe";
+    public static final String FILE_NAME1 = "CloudMusic.apk";
+    public static final String FILE_NAME2 = "wandoujia.apk";
+    public static final String FILE_NAME3 = "GoogleEarth.exe";
 
     //更新 UI 的广播接收器
     BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initDatas();
-        initEvents();
     }
 
     @Override
@@ -92,9 +91,5 @@ public class MainActivity extends AppCompatActivity {
         intentFilter.addAction(DownloadService.ACTION_UPDATE);
         intentFilter.addAction(DownloadService.ACTION_FINISHED);
         registerReceiver(receiver, intentFilter);
-    }
-
-    private void initEvents() {
-
     }
 }

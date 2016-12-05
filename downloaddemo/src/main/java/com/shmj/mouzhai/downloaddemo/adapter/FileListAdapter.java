@@ -22,11 +22,10 @@ import java.util.List;
  * Created by Mouzhai on 2016/12/1.
  */
 
-public class FileListAdapter extends BaseAdapter implements View.OnClickListener {
+public class FileListAdapter extends BaseAdapter{
 
     private Context context;
     private List<FileInfo> fileInfos;
-    private FileInfo fileInfo = null;
 
     public FileListAdapter(Context context, List<FileInfo> fileInfos) {
         this.context = context;
@@ -50,7 +49,7 @@ public class FileListAdapter extends BaseAdapter implements View.OnClickListener
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        fileInfo = fileInfos.get(i);
+        final FileInfo fileInfo = fileInfos.get(i);
         ViewHolder viewHolder;
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.item_main, viewGroup, false);
@@ -63,8 +62,24 @@ public class FileListAdapter extends BaseAdapter implements View.OnClickListener
 
             viewHolder.tvFileName.setText(fileInfo.getFileName());
             viewHolder.pbProgress.setMax(100);
-            viewHolder.btnStart.setOnClickListener(this);
-            viewHolder.btnStop.setOnClickListener(this);
+            viewHolder.btnStart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent startIntent = new Intent(context, DownloadService.class);
+                    startIntent.setAction(DownloadService.ACTION_START);
+                    startIntent.putExtra("fileInfo", fileInfo);
+                    context.startService(startIntent);
+                }
+            });
+            viewHolder.btnStop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent stopIntent = new Intent(context, DownloadService.class);
+                    stopIntent.setAction(DownloadService.ACTION_STOP);
+                    stopIntent.putExtra("fileInfo", fileInfo);
+                    context.startService(stopIntent);
+                }
+            });
 
             view.setTag(viewHolder);
         } else {
@@ -74,30 +89,12 @@ public class FileListAdapter extends BaseAdapter implements View.OnClickListener
         return view;
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_start:
-                Intent startIntent = new Intent(context, DownloadService.class);
-                startIntent.setAction(DownloadService.ACTION_START);
-                startIntent.putExtra("fileInfo", fileInfo);
-                context.startService(startIntent);
-                break;
-            case R.id.btn_stop:
-                Intent stopIntent = new Intent(context, DownloadService.class);
-                stopIntent.setAction(DownloadService.ACTION_STOP);
-                stopIntent.putExtra("fileInfo", fileInfo);
-                context.startService(stopIntent);
-                break;
-        }
-    }
-
     /**
      * 更新列表项中的进度条
      */
     public void updateProgress(int id, int progress){
-        FileInfo fileInfo = fileInfos.get(id);
-        fileInfo.setFinished(progress);
+        FileInfo mFileInfo = fileInfos.get(id);
+        mFileInfo.setFinished(progress);
         notifyDataSetChanged();
     }
 
