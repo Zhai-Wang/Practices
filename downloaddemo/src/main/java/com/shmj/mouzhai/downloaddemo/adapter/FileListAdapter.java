@@ -1,7 +1,9 @@
 package com.shmj.mouzhai.downloaddemo.adapter;
 
 import android.content.Context;
-import android.content.Intent;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +28,15 @@ public class FileListAdapter extends BaseAdapter{
 
     private Context context;
     private List<FileInfo> fileInfos;
+    private Messenger messenger;
 
     public FileListAdapter(Context context, List<FileInfo> fileInfos) {
         this.context = context;
         this.fileInfos = fileInfos;
+    }
+
+    public void setMessenger(Messenger messenger){
+        this.messenger = messenger;
     }
 
     @Override
@@ -65,19 +72,27 @@ public class FileListAdapter extends BaseAdapter{
             viewHolder.btnStart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent startIntent = new Intent(context, DownloadService.class);
-                    startIntent.setAction(DownloadService.ACTION_START);
-                    startIntent.putExtra("fileInfo", fileInfo);
-                    context.startService(startIntent);
+                    Message msgStart = new Message();
+                    msgStart.what = DownloadService.MSG_START;
+                    msgStart.obj = fileInfo;
+                    try {
+                        messenger.send(msgStart);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             viewHolder.btnStop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent stopIntent = new Intent(context, DownloadService.class);
-                    stopIntent.setAction(DownloadService.ACTION_STOP);
-                    stopIntent.putExtra("fileInfo", fileInfo);
-                    context.startService(stopIntent);
+                    Message msgStart = new Message();
+                    msgStart.what = DownloadService.MSG_STOP;
+                    msgStart.obj = fileInfo;
+                    try {
+                        messenger.send(msgStart);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 

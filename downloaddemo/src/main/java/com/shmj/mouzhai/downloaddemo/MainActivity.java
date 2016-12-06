@@ -1,10 +1,15 @@
 package com.shmj.mouzhai.downloaddemo;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.app.Service;
+import android.content.ComponentName;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -12,6 +17,7 @@ import android.widget.Toast;
 import com.shmj.mouzhai.downloaddemo.adapter.FileListAdapter;
 import com.shmj.mouzhai.downloaddemo.entities.FileInfo;
 import com.shmj.mouzhai.downloaddemo.services.DownloadService;
+import com.shmj.mouzhai.downloaddemo.util.NotificationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private List<FileInfo> fileInfos;
     private FileInfo fileInfo, fileInfo1, fileInfo2, fileInfo3;
     private FileListAdapter fileListAdapter;
+    private NotificationUtil notificationUtil;
+    private Messenger serviceMessenger;//Service 中的 Messenger
 
     public static final String FILE_URL = "http://www.imooc.com/mobile/mukewang.apk";
     public static final String FILE_URL1 = "http://music.163.com/api/android/download/latest2";
@@ -33,21 +41,58 @@ public class MainActivity extends AppCompatActivity {
     public static final String FILE_NAME2 = "wandoujia.apk";
     public static final String FILE_NAME3 = "GoogleEarth.exe";
 
-    //更新 UI 的广播接收器
-    BroadcastReceiver receiver = new BroadcastReceiver() {
+    Handler handler = new Handler(){
         @Override
-        public void onReceive(Context context, Intent intent) {
-            if (DownloadService.ACTION_UPDATE.equals(intent.getAction())) {
-                //更新进度条
-                int finished = intent.getIntExtra("finished", 0);
-                int id = intent.getIntExtra("id", 0);
-                fileListAdapter.updateProgress(id, finished);
-            } else if (DownloadService.ACTION_FINISHED.equals(intent.getAction())) {
-                //结束进度，更新进度为0
-                FileInfo fileInfo = (FileInfo) intent.getSerializableExtra("fileInfo");
-                fileListAdapter.updateProgress(fileInfo.getId(), 0);
-                Toast.makeText(MainActivity.this, fileInfo.getFileName() + "下载完毕", Toast.LENGTH_SHORT).show();
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case DownloadService.MSG_UPDATE:
+                    //更新进度条
+                    int finished = msg.arg1;
+                    int id = msg.arg2;
+                    fileListAdapter.updateProgress(id, finished);
+                    //更新通知里的进度条
+                    notificationUtil.updateNotification(id, finished);
+                    break;
+                case DownloadService.MSG_STOP:
+                    //结束进度，更新进度为0
+                    FileInfo fileInfo = (FileInfo) msg.obj;
+                    fileListAdapter.updateProgress(fileInfo.getId(), 0);
+                    Toast.makeText(MainActivity.this, fileInfo.getFileName() + "下载完毕", Toast.LENGTH_SHORT).show();
+                    //取消通知
+                    notificationUtil.cancleNotification(fileInfo.getId());
+                    break;
+                case DownloadService.MSG_START:
+                    //结束进度，更新进度为0
+                    notificationUtil.showNotification((FileInfo) msg.obj);
+                    break;
             }
+        }
+    };
+
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            //获得 Service 中的 Messenger
+            serviceMessenger = new Messenger(iBinder);
+            //设置适配器中的 Messenger
+            fileListAdapter.setMessenger(serviceMessenger);
+            //创建 Activity 中的 Messenger
+            Messenger activityMessenger = new Messenger(handler);
+            //创建消息
+            Message message = new Message();
+            message.what = DownloadService.MSG_BIND;
+            message.replyTo = activityMessenger;
+            //用 Service 中的 Messenger 发送 Activity 中的 Messenger
+            try {
+                serviceMessenger.send(message);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
         }
     };
 
@@ -57,12 +102,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initDatas();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receiver);
     }
 
     private void initView() {
@@ -86,10 +125,10 @@ public class MainActivity extends AppCompatActivity {
         //设置适配器
         lvFile.setAdapter(fileListAdapter);
 
-        //注册广播接收器
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(DownloadService.ACTION_UPDATE);
-        intentFilter.addAction(DownloadService.ACTION_FINISHED);
-        registerReceiver(receiver, intentFilter);
+        notificationUtil = new NotificationUtil(this);
+
+        //绑定 Service
+        Intent intent = new Intent(this, DownloadService.class);
+        bindService(intent, serviceConnection, Service.BIND_AUTO_CREATE);
     }
 }

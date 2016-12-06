@@ -6,6 +6,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -34,35 +36,72 @@ public class DownloadService extends Service {
     public static final String ACTION_STOP = "ACTION_STOP";
     public static final String ACTION_UPDATE = "ACTION_UPDATE";
     public static final String ACTION_FINISHED = "ACTION_FINISHED";
-    public static final int MSG_INIT = 0;
+    public static final int MSG_INIT = 0x1;//初始化标识
+    public static final int MSG_BIND = 0x2;//绑定标识
+    public static final int MSG_START = 0x3;
+    public static final int MSG_STOP = 0x4;
+    public static final int MSG_UPDATE = 0x5;
+    public static final int MSG_FINISHED = 0x6;
 
     //下载任务集合
     private Map<Integer, DownloadTask> tasks = new LinkedHashMap<>();
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        //获得 Activity 传来的参数
-        if (ACTION_START.equals(intent.getAction())) {
-            FileInfo fileInfo = (FileInfo) intent.getSerializableExtra("fileInfo");
-            //启动线程
-            InitThread initThread = new InitThread(fileInfo);
-            DownloadTask.executorService.execute(initThread);
-        } else if (ACTION_STOP.equals(intent.getAction())) {
-            //暂停下载
-            //从集合中取出下载任务
-            FileInfo fileInfo = (FileInfo) intent.getSerializableExtra("fileInfo");
-            DownloadTask downloadTask = tasks.get(fileInfo.getId());
-            if (downloadTask != null) {
-                downloadTask.isPause = true;
+    private Messenger activityMessenger;//来自 Activity 的 Messenger
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            FileInfo fileInfo;
+            DownloadTask task;
+            switch (msg.what) {
+                case MSG_INIT:
+                    fileInfo = (FileInfo) msg.obj;
+                    Log.e("test", "Init: " + fileInfo.toString());
+                    //启动下载任务
+                    task = new DownloadTask(DownloadService.this, activityMessenger, fileInfo, 3);
+                    task.download();
+                    //把下载任务添加到集合中
+                    tasks.put(fileInfo.getId(), task);
+                    //启动通知
+                    Message msgStart = new Message();
+                    msgStart.what = MSG_START;
+                    msgStart.obj = fileInfo;
+                    try {
+                        activityMessenger.send(msgStart);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case MSG_BIND:
+                    //处理绑定的 Messenger
+                    activityMessenger = msg.replyTo;
+                    break;
+                case MSG_START:
+                    fileInfo = (FileInfo) msg.obj;
+                    //启动线程
+                    InitThread initThread = new InitThread(fileInfo);
+                    DownloadTask.executorService.execute(initThread);
+                    break;
+                case MSG_STOP:
+                    //暂停下载
+                    //从集合中取出下载任务
+                    fileInfo = (FileInfo) msg.obj;
+                    DownloadTask downloadTask = tasks.get(fileInfo.getId());
+                    if (downloadTask != null) {
+                        downloadTask.isPause = true;
+                    }
+                    break;
             }
         }
-        return super.onStartCommand(intent, flags, startId);
-    }
+    };
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        //创建 Messenger 对象，包含 Handler 引用
+        Messenger messenger = new Messenger(handler);
+        //返回 Messenger 的 Binder
+        return messenger.getBinder();
     }
 
     /**
@@ -70,23 +109,6 @@ public class DownloadService extends Service {
      */
     class InitThread extends Thread {
         private FileInfo mFileInfo = null;
-
-        Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case MSG_INIT:
-                        FileInfo fileInfo = (FileInfo) msg.obj;
-                        Log.e("test", "Init: " + fileInfo.toString());
-                        //启动下载任务
-                        DownloadTask task = new DownloadTask(DownloadService.this, fileInfo, 3);
-                        task.download();
-                        //把下载任务添加到集合中
-                        tasks.put(fileInfo.getId(), task);
-                        break;
-                }
-            }
-        };
 
         public InitThread(FileInfo mFileInfo) {
             this.mFileInfo = mFileInfo;
@@ -113,7 +135,7 @@ public class DownloadService extends Service {
                 //创建文件目录
                 File dir = new File(DOWNLOAD_PATH);
                 if (!dir.exists()) {
-                    if(!dir.mkdir()){
+                    if (!dir.mkdir()) {
                         return;
                     }
                 }
