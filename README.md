@@ -16,3 +16,9 @@
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/festivalsms/screenshoots/device-2016-11-24-110923.png" width="10%" height="10%">
 
 ##[多线程下载文件](https://github.com/Zhai-Wang/Practices/tree/master/downloaddemo/src/main)
+
+##[图片特效处理](https://github.com/Zhai-Wang/Practices/tree/master/imagedemo/src/main)
+简单的特效实现
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/imagedemo/screenshots/device-2016-12-07-154944.png" width="10%" height="10%">
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/imagedemo/screenshots/device-2016-12-07-155019.png" width="10%" height="10%">
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/imagedemo/screenshots/device-2016-12-07-155038.png" width="10%" height="10%">
