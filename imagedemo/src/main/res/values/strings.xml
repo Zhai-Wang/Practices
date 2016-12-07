@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ImageDemo</string>
+    <string name="image_demo">图像处理 Demo</string>
+    <string name="primary_color">PRIMARY COLOR</string>
+    <string name="change">CHANGE</string>
+    <string name="reset">RESET</string>
+    <string name="color_matrix">COLOR MATRIX</string>
+    <string name="pixel_effect">PIXEL EFFECT</string>
+</resources>
