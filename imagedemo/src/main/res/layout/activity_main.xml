@@ -36,4 +36,10 @@
         android:layout_height="wrap_content"
         android:onClick="clickPixelEffect"
         android:text="@string/pixel_effect" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="clickImageMatrix"
+        android:text="@string/image_matrix" />
 </LinearLayout>

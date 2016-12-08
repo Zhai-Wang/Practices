@@ -24,4 +24,8 @@ public class MainActivity extends AppCompatActivity {
     public void clickPixelEffect(View view) {
         startActivity(new Intent(this, PixelsActivity.class));
     }
+
+    public void clickImageMatrix(View view) {
+        startActivity(new Intent(this, ImageMatrixActivity.class));
+    }
 }

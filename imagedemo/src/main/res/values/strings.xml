@@ -6,4 +6,5 @@
     <string name="reset">RESET</string>
     <string name="color_matrix">COLOR MATRIX</string>
     <string name="pixel_effect">PIXEL EFFECT</string>
+    <string name="image_matrix">IMAGE MATRIX</string>
 </resources>
