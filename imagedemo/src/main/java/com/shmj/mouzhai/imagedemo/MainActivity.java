@@ -28,4 +28,16 @@ public class MainActivity extends AppCompatActivity {
     public void clickImageMatrix(View view) {
         startActivity(new Intent(this, ImageMatrixActivity.class));
     }
+
+    public void clickXFermode(View view) {
+        startActivity(new Intent(this, XfermodeActivity.class));
+    }
+
+    public void clickReflect(View view) {
+        startActivity(new Intent(this, ReflectActivity.class));
+    }
+
+    public void clickMesh(View view) {
+        startActivity(new Intent(this, MeshActivity.class));
+    }
 }

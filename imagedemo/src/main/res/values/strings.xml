@@ -7,4 +7,7 @@
     <string name="color_matrix">COLOR MATRIX</string>
     <string name="pixel_effect">PIXEL EFFECT</string>
     <string name="image_matrix">IMAGE MATRIX</string>
+    <string name="round_rect">XFERMODE AND SHADER</string>
+    <string name="reflect">REFLECT</string>
+    <string name="mesh">MESH</string>
 </resources>

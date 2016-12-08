@@ -18,7 +18,10 @@
         <activity android:name=".PrimaryColorActivity" />
         <activity android:name=".ColorMatrixActivity" />
         <activity android:name=".PixelsActivity" />
-        <activity android:name=".ImageMatrixActivity"></activity>
+        <activity android:name=".ImageMatrixActivity" />
+        <activity android:name=".XfermodeActivity" />
+        <activity android:name=".ReflectActivity" />
+        <activity android:name=".MeshActivity"></activity>
     </application>
 
 </manifest>

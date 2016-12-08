@@ -42,4 +42,22 @@
         android:layout_height="wrap_content"
         android:onClick="clickImageMatrix"
         android:text="@string/image_matrix" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="clickXFermode"
+        android:text="@string/round_rect" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="clickReflect"
+        android:text="@string/reflect" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="clickMesh"
+        android:text="@string/mesh" />
 </LinearLayout>
