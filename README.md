@@ -26,3 +26,6 @@
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/imagedemo/screenshots/device-2016-12-08-161502.png" width="10%" height="10%">
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/imagedemo/screenshots/device-2016-12-08-161200.png" width="10%" height="10%">
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/imagedemo/screenshots/1.gif" width="10%" height="10%">
+
+##[自定义卫星式菜单](https://github.com/Zhai-Wang/Practices/tree/master/srcmenudemo/src/main)
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/srcmenudemo/screenshots/1.gif" width="10%" height="10%">
