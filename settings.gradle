@@ -1,1 +1,1 @@
-include ':commonviewholder', ':myfirstapp', ':topbar', ':festivalsms', ':scrollerviewmenu', ':downloaddemo', ':imagedemo'
+include ':commonviewholder', ':myfirstapp', ':topbar', ':festivalsms', ':scrollerviewmenu', ':downloaddemo', ':imagedemo', ':srcmenudemo'
