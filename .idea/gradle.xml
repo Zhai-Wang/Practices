@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/scrollerviewmenu" />
             <option value="$PROJECT_DIR$/srcmenudemo" />
             <option value="$PROJECT_DIR$/topbar" />
+            <option value="$PROJECT_DIR$/treeviewdemo" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/scrollerviewmenu/scrollerviewmenu.iml" filepath="$PROJECT_DIR$/scrollerviewmenu/scrollerviewmenu.iml" />
       <module fileurl="file://$PROJECT_DIR$/srcmenudemo/srcmenudemo.iml" filepath="$PROJECT_DIR$/srcmenudemo/srcmenudemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/topbar/topbar.iml" filepath="$PROJECT_DIR$/topbar/topbar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/treeviewdemo/treeviewdemo.iml" filepath="$PROJECT_DIR$/treeviewdemo/treeviewdemo.iml" />
     </modules>
   </component>
 </project>
