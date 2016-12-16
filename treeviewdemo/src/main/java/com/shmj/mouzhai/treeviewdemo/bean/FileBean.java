@@ -1,6 +1,7 @@
 package com.shmj.mouzhai.treeviewdemo.bean;
 
 import com.shmj.mouzhai.treeviewdemo.annotation.TreeNodeId;
+import com.shmj.mouzhai.treeviewdemo.annotation.TreeNodeLabel;
 import com.shmj.mouzhai.treeviewdemo.annotation.TreeNodePid;
 
 /**
@@ -16,11 +17,10 @@ public class FileBean {
     private int id;
     @TreeNodePid
     private int pId;
-    @TreeNodePid
+    @TreeNodeLabel
     private String label;
 
     private String des;
-
 
     public FileBean(int id, int pId, String label) {
         this.id = id;

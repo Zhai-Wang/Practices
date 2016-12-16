@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.shmj.mouzhai.treeviewdemo.utils.Node;
-import com.shmj.mouzhai.treeviewdemo.utils.TreeViewHelper;
+import com.shmj.mouzhai.treeviewdemo.utils.TreeHelper;
 
 import java.util.List;
 
@@ -21,43 +21,50 @@ import java.util.List;
 
 public abstract class TreeListViewAdapter<T> extends BaseAdapter {
 
-    List<Node> mAllNodes;
-    List<Node> mVisibleNodes;
-    LayoutInflater mInflater;
-    private OnTreeNodeClickListener mOnTreeNodeClickListener;
+    protected Context mContext;
+    protected List<Node> mAllNodes;
+    protected List<Node> mVisibleNodes;
+    protected LayoutInflater mInflater;
 
-    TreeListViewAdapter(Context context, ListView tree, List<T> datas, int defaultLevel)
-            throws IllegalAccessException {
-        mInflater = LayoutInflater.from(context);
-        mAllNodes = TreeViewHelper.getSortedNodes(datas, defaultLevel);
-        mVisibleNodes = TreeViewHelper.filterVisibleNodes(mAllNodes);
+    protected ListView mTree;
+    private OnTreeNodeClickListener mListener;
 
-        tree.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    public TreeListViewAdapter(ListView tree, Context context, List<T> datas, int defaultExpandLevel)
+            throws IllegalArgumentException, IllegalAccessException {
+        mContext = context;
+        mInflater = LayoutInflater.from(mContext);
+        mAllNodes = TreeHelper.getSortedNodes(datas, defaultExpandLevel);
+        mVisibleNodes = TreeHelper.filterVisibleNodes(mAllNodes);
+
+        mTree = tree;
+
+        mTree.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int positon, long id) {
-                expandOrCollapse(positon);
-                if (mOnTreeNodeClickListener != null) {
-                    mOnTreeNodeClickListener.onClick(mVisibleNodes.get(positon), positon);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                expandOrCollapse(position);
+
+                if (mListener != null) {
+                    mListener.onClick(mVisibleNodes.get(position), position);
                 }
             }
         });
     }
 
-    public void setOnTreeNodeClickListener(OnTreeNodeClickListener mOnTreeNodeClickListener) {
-        this.mOnTreeNodeClickListener = mOnTreeNodeClickListener;
+    public void setOnTreeNodeClickListener(OnTreeNodeClickListener mListener) {
+        this.mListener = mListener;
     }
 
     /**
      * 点击收缩或展开
      */
-    private void expandOrCollapse(int positon) {
-        Node n = mVisibleNodes.get(positon);
+    private void expandOrCollapse(int position) {
+        Node n = mVisibleNodes.get(position);
         if (n != null) {
-            if (!n.isLeaf()) {
-                n.setExpand(!n.isExpand());
-                mVisibleNodes = TreeViewHelper.filterVisibleNodes(mAllNodes);
-                notifyDataSetChanged();
-            }
+            if (n.isLeaf())
+                return;
+            n.setExpand(!n.isExpand());
+            mVisibleNodes = TreeHelper.filterVisibleNodes(mAllNodes);
+            notifyDataSetChanged();
         }
     }
 
@@ -77,13 +84,12 @@ public abstract class TreeListViewAdapter<T> extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        Node node = mVisibleNodes.get(i);
-        view = getConvertView(node, i, view, viewGroup);
-
-        //设置内边距
-        view.setPadding(node.getLevel() * 30, 3, 3, 3);
-        return view;
+    public View getView(int position, View convertView, ViewGroup parent) {
+        Node node = mVisibleNodes.get(position);
+        convertView = getConvertView(node, position, convertView, parent);
+        // 设置内边距
+        convertView.setPadding(node.getLevel() * 30, 3, 3, 3);
+        return convertView;
     }
 
     /**

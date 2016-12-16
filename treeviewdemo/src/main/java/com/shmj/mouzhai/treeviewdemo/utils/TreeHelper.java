@@ -15,39 +15,41 @@ import java.util.List;
  * Created by Mouzhai on 2016/12/13.
  */
 
-public class TreeViewHelper {
+public class TreeHelper {
 
     /**
      * 利用反射与注解，将原始数据转化为 Node 格式的树形数据
      */
-    private static <T> List<Node> convertData2Node(List<T> datas) throws IllegalAccessException {
-        List<Node> nodes = new ArrayList<>();
+    private static <T> List<Node> convertData2Node(List<T> datas)
+            throws IllegalArgumentException, IllegalAccessException {
+        List<Node> nodes = new ArrayList<Node>();
         Node node = null;
 
         for (T t : datas) {
-            int id = 1;
-            int pId = -1;
+            int id = -1;
+            int pid = -1;
             String label = null;
 
             //获取几个字段的值
-            Class c = t.getClass();
-            Field[] fileds = c.getDeclaredFields();
+            node = new Node();
+            Class clazz = t.getClass();
+            Field[] fields = clazz.getDeclaredFields();
             //遍历 Class 的属性，根据相应的注解获取值
-            for (Field field : fileds) {
+            for (Field field : fields) {
                 if (field.getAnnotation(TreeNodeId.class) != null) {
                     field.setAccessible(true);
                     id = field.getInt(t);
                 }
                 if (field.getAnnotation(TreeNodePid.class) != null) {
                     field.setAccessible(true);
-                    pId = field.getInt(t);
+                    pid = field.getInt(t);
                 }
                 if (field.getAnnotation(TreeNodeLabel.class) != null) {
                     field.setAccessible(true);
                     label = (String) field.get(t);
                 }
             }
-            node = new Node(id, pId, label);
+            node = new Node(id, pid, label);
             nodes.add(node);
         }
 
@@ -80,17 +82,18 @@ public class TreeViewHelper {
      * 为数据排序
      * 这里直接获取原始数据，在方法里转换数据格式，以减少外部调用的操作
      */
-    public static <T> List<Node> getSortedNodes(List<T> datas, int defaultExpandLevel) throws IllegalAccessException {
-        List<Node> results = new ArrayList<>();
+    public static <T> List<Node> getSortedNodes(List<T> datas, int defaultExpandLevel)
+            throws IllegalArgumentException, IllegalAccessException {
+        List<Node> result = new ArrayList<Node>();
         List<Node> nodes = convertData2Node(datas);
         //获取树的根节点
         List<Node> rootNodes = getRootNodes(nodes);
 
         //遍历根节点，添加相应的子节点
         for (Node node : rootNodes) {
-            addNode(results, node, defaultExpandLevel, 1);
+            addNode(result, node, defaultExpandLevel, 1);
         }
-        return results;
+        return result;
     }
 
     /**
@@ -104,11 +107,11 @@ public class TreeViewHelper {
             node.setExpand(true);
         }
         //判断是否为叶子节点
-        if (!node.isLeaf()) {
-            //如果不是叶子节点，递归调用此方法，循环添加子节点
-            for (int i = 0; i < node.getChildren().size(); i++) {
-                addNode(results, node.getChildren().get(i), defaultExpandLevel, currentLevel + 1);
-            }
+        if (node.isLeaf())
+            return;
+        //如果不是叶子节点，递归调用此方法，循环添加子节点
+        for (int i = 0; i < node.getChildren().size(); i++) {
+            addNode(results, node.getChildren().get(i), defaultExpandLevel, currentLevel + 1);
         }
     }
 

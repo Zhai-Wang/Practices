@@ -2,7 +2,6 @@ package com.shmj.mouzhai.treeviewdemo;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -35,37 +34,44 @@ public class MainActivity extends AppCompatActivity {
         initDatas();
 
         try {
-            mAdapter = new SimpleTreeListViewAdapter<>(this, mTree, mDatas, 1);
+            mAdapter = new SimpleTreeListViewAdapter<FileBean>(this, mTree, mDatas, 0);
             mTree.setAdapter(mAdapter);
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
 
+        initEvent();
+    }
+
+    private void initEvent() {
         mAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
             public void onClick(Node node, int position) {
                 if (node.isLeaf()) {
-                    Toast.makeText(MainActivity.this, node.getName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, node.getName(),
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         mTree.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
-                final EditText editText = new EditText(MainActivity.this);
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("添加节点")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (!TextUtils.isEmpty(editText.getText().toString())) {
 
-                                }
-                                mAdapter.addExtraNode(position, editText.getText().toString());
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position,
+                                           long id) {
+                final EditText et = new EditText(MainActivity.this);
+                new android.app.AlertDialog.Builder(MainActivity.this).setTitle("Add Node")
+                        .setView(et)
+                        .setPositiveButton("Sure", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (TextUtils.isEmpty(et.getText().toString()))
+                                    return;
+                                mAdapter.addExtraNode(position, et.getText()
+                                        .toString());
                             }
                         })
-                        .setNegativeButton("取消", null)
+                        .setNegativeButton("Cancel", null)
                         .show();
                 return true;
             }

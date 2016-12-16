@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.shmj.mouzhai.treeviewdemo.R;
 import com.shmj.mouzhai.treeviewdemo.utils.Node;
-import com.shmj.mouzhai.treeviewdemo.utils.TreeViewHelper;
+import com.shmj.mouzhai.treeviewdemo.utils.TreeHelper;
 
 import java.util.List;
 
@@ -22,13 +22,13 @@ import java.util.List;
 public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
 
     public SimpleTreeListViewAdapter(Context context, ListView tree, List<T> datas, int defaultLevel)
-            throws IllegalAccessException {
-        super(context, tree, datas, defaultLevel);
+            throws IllegalArgumentException, IllegalAccessException {
+        super(tree, context, datas, defaultLevel);
     }
 
     @Override
     public View getConvertView(Node node, int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
+        ViewHolder holder;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.item_treeview, parent, false);
             holder = new ViewHolder();
@@ -64,7 +64,7 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         node.getChildren().add(extraNode);
 
         mAllNodes.add(indexOf + 1, extraNode);
-        mVisibleNodes = TreeViewHelper.filterVisibleNodes(mAllNodes);
+        mVisibleNodes = TreeHelper.filterVisibleNodes(mAllNodes);
         notifyDataSetChanged();
     }
 
