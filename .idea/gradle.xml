@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/srcmenudemo" />
             <option value="$PROJECT_DIR$/topbar" />
             <option value="$PROJECT_DIR$/treeviewdemo" />
+            <option value="$PROJECT_DIR$/zxingdemo" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
