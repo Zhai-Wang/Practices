@@ -32,3 +32,9 @@
 
 ##[多层级树形菜单](https://github.com/Zhai-Wang/Practices/tree/master/treeviewdemo/src/main)
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/treeviewdemo/screenshots/1.gif" width="10%" height="10%">
+
+##[二维码](https://github.com/Zhai-Wang/Practices/tree/master/zxingdemo/src/main)
+利用 ZXing Android Embedded 实现二维码处理
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/zxingdemo/screenshots/device-2016-12-19-154010.png" width="10%" height="10%">
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/zxingdemo/screenshots/device-2016-12-19-154059.png" width="10%" height="10%">
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/zxingdemo/screenshots/device-2016-12-19-160736.png" width="10%" height="10%">
