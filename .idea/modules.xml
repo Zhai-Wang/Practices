@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/festivalsms/festivalsms.iml" filepath="$PROJECT_DIR$/festivalsms/festivalsms.iml" />
       <module fileurl="file://$PROJECT_DIR$/imagedemo/imagedemo.iml" filepath="$PROJECT_DIR$/imagedemo/imagedemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/myfirstapp/myfirstapp.iml" filepath="$PROJECT_DIR$/myfirstapp/myfirstapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/recyclerviewdemo/recyclerviewdemo.iml" filepath="$PROJECT_DIR$/recyclerviewdemo/recyclerviewdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/scrollerviewmenu/scrollerviewmenu.iml" filepath="$PROJECT_DIR$/scrollerviewmenu/scrollerviewmenu.iml" />
       <module fileurl="file://$PROJECT_DIR$/srcmenudemo/srcmenudemo.iml" filepath="$PROJECT_DIR$/srcmenudemo/srcmenudemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/topbar/topbar.iml" filepath="$PROJECT_DIR$/topbar/topbar.iml" />
