@@ -37,8 +37,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(layoutId, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
@@ -47,7 +46,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         setUpClickEvent(holder);
     }
 
-    protected void setUpClickEvent(final MyViewHolder holder) {
+    void setUpClickEvent(final MyViewHolder holder) {
         //设置点击事件
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +59,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    mOnItemClickListener.onLongItemClidk(holder.itemView, holder.getLayoutPosition());
+                    mOnItemClickListener.onLongItemClick(holder.itemView, holder.getLayoutPosition());
                     return false;
                 }
             });
@@ -94,14 +93,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
 
-        void onLongItemClidk(View view, int position);
+        void onLongItemClick(View view, int position);
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textView;
+        TextView textView;
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
 
             textView = (TextView) itemView.findViewById(R.id.tv_content);

@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onLongItemClidk(View view, int position) {
+            public void onLongItemClick(View view, int position) {
                 Toast.makeText(MainActivity.this, "LONG CLICK : " + position, Toast.LENGTH_SHORT).show();
             }
         });

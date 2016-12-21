@@ -37,7 +37,7 @@ public class StaggeredActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onLongItemClidk(View view, int position) {
+            public void onLongItemClick(View view, int position) {
                 adapter.deleteItem(position);
             }
         });
