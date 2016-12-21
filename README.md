@@ -24,17 +24,19 @@
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/imagedemo/screenshots/device-2016-12-07-155038.png" width="10%" height="10%">
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/imagedemo/screenshots/device-2016-12-08-105025.png" width="10%" height="10%">
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/imagedemo/screenshots/device-2016-12-08-161502.png" width="10%" height="10%">
-<img src="https://github.com/Zhai-Wang/Practices/blob/master/imagedemo/screenshots/device-2016-12-08-161200.png" width="10%" height="10%">
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/imagedemo/screenshots/1.gif" width="10%" height="10%">
 
 ##[自定义卫星式菜单](https://github.com/Zhai-Wang/Practices/tree/master/srcmenudemo/src/main)
-<img src="https://github.com/Zhai-Wang/Practices/blob/master/srcmenudemo/screenshots/1.gif" width="10%" height="10%">
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/srcmenudemo/screenshots/1.gif">
 
 ##[多层级树形菜单](https://github.com/Zhai-Wang/Practices/tree/master/treeviewdemo/src/main)
-<img src="https://github.com/Zhai-Wang/Practices/blob/master/treeviewdemo/screenshots/1.gif" width="10%" height="10%">
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/treeviewdemo/screenshots/1.gif">
 
 ##[二维码](https://github.com/Zhai-Wang/Practices/tree/master/zxingdemo/src/main)
 利用 ZXing Android Embedded 实现二维码处理
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/zxingdemo/screenshots/device-2016-12-19-154010.png" width="10%" height="10%">
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/zxingdemo/screenshots/device-2016-12-19-154059.png" width="10%" height="10%">
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/zxingdemo/screenshots/device-2016-12-19-160736.png" width="10%" height="10%">
+
+##[RecyclerView 初体验](https://github.com/Zhai-Wang/Practices/tree/master/recyclerviewdemo/src/main)
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/recyclerviewdemo/screenshots/1.gif">
