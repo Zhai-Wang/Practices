@@ -40,3 +40,6 @@
 
 ##[RecyclerView 初体验](https://github.com/Zhai-Wang/Practices/tree/master/recyclerviewdemo/src/main)
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/recyclerviewdemo/screenshots/1.gif">
+
+##[仿微信6.0主界面](https://github.com/Zhai-Wang/Practices/tree/master/weixin6.0/src/main)
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/weixin6.0/screenshots/device-2016-12-28-164052.png">
