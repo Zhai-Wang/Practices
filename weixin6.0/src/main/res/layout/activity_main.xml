@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:zhai="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.mouzhai.weixin60.MainActivity">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/tab_bg"
+        android:orientation="horizontal">
+
+        <com.mouzhai.weixin60.ChangeIconColorWithText
+            android:id="@+id/indicator_one"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            zhai:color="#ff45c01a"
+            zhai:icon="@mipmap/ic_menu_start_conversation"
+            zhai:text="@string/app_name"
+            zhai:text_size="12sp" />
+
+        <com.mouzhai.weixin60.ChangeIconColorWithText
+            android:id="@+id/indicator_two"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            zhai:color="#ff45c01a"
+            zhai:icon="@mipmap/ic_menu_friendslist"
+            zhai:text="@string/tab_contact"
+            zhai:text_size="12sp" />
+
+        <com.mouzhai.weixin60.ChangeIconColorWithText
+            android:id="@+id/indicator_three"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            zhai:color="#ff45c01a"
+            zhai:icon="@mipmap/ic_menu_allfriends"
+            zhai:text="@string/menu_add_friends"
+            zhai:text_size="12sp" />
+
+        <com.mouzhai.weixin60.ChangeIconColorWithText
+            android:id="@+id/indicator_four"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            zhai:color="#ff45c01a"
+            zhai:icon="@mipmap/ic_menu_emoticons"
+            zhai:text="@string/tab_found"
+            zhai:text_size="12sp" />
+    </LinearLayout>
+
+</LinearLayout>
