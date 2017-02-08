@@ -1,2 +1,2 @@
-include ':commonviewholder', ':myfirstapp', ':topbar', ':festivalsms', ':scrollerviewmenu', ':recyclerviewdemo', ':weixin6.0',
+include ':commonviewholder', ':myfirstapp', ':topbar', ':festivalsms', ':scrollerviewmenu', ':recyclerviewdemo', ':weixin6.0', ':mywidget',
         ':downloaddemo', ':imagedemo', ':srcmenudemo', ':treeviewdemo', ':zxingdemo'

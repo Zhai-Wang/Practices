@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MyWidget</string>
+    <string name="time_content">显示时间：</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="weather">天气</string>
+    <string name="hum">湿度</string>
+    <string name="wind">风力</string>
+    <string name="temp">温度</string>
+    <string name="time">时间</string>
+</resources>
