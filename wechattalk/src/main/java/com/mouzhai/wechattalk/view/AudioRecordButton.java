@@ -3,6 +3,7 @@ package com.mouzhai.wechattalk.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 
 import com.mouzhai.wechattalk.R;
@@ -23,12 +24,26 @@ public class AudioRecordButton extends Button {
     private int mCurState = STATE_RECORD_NORMAL;//默认状态
     private boolean isRecording = false;//是否正在录音
 
+    private DialogManager mDialogManager;
+
     public AudioRecordButton(Context context) {
         this(context, null);
     }
 
     public AudioRecordButton(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        mDialogManager = new DialogManager(getContext());
+
+        setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                // TODO: 2017/2/15 真正实行应当在 audio end prepared 之后
+                mDialogManager.showDialog();
+                isRecording = true;
+                return false;
+            }
+        });
     }
 
     @Override
@@ -40,7 +55,6 @@ public class AudioRecordButton extends Button {
         //根据手指动作，判断应该采取什么反应
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                isRecording = true;// TODO: 2017/2/8 test
                 changeState(STATE_RECORDING);
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -56,9 +70,11 @@ public class AudioRecordButton extends Button {
                 break;
             case MotionEvent.ACTION_UP:
                 if (mCurState == STATE_RECORDING){
-                    //保存录音
+                    // TODO: 2017/2/15 保存录音
+                    mDialogManager.dismissDialog();
                 }else if (mCurState == STATE_WANT_CANCEL){
-                    //取消录音
+                    // TODO: 2017/2/15 取消录音
+                    mDialogManager.dismissDialog();
                 }
                 reset();
                 break;
@@ -108,12 +124,16 @@ public class AudioRecordButton extends Button {
                 case STATE_RECORDING:
                     setBackgroundResource(R.drawable.background_btn_recording);
                     setText(R.string.recording);
-                    // TODO: 2017/2/8 Dialog recording
+                    if (isRecording){
+                        mDialogManager.recording();
+                    }
                     break;
                 case STATE_WANT_CANCEL:
                     setBackgroundResource(R.drawable.background_btn_recording);
                     setText(R.string.want_cancel);
-                    // TODO: 2017/2/8 Dialog dismiss
+                    if (isRecording){
+                        mDialogManager.wantToCancel();
+                    }
                     break;
             }
         }
