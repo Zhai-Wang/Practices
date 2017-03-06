@@ -97,10 +97,6 @@ public class DialogManager {
      * 根据音量变化更新图标
      */
     public void updateVoice(int level){if (mDialog != null && mDialog.isShowing()){
-        mIcon.setVisibility(View.VISIBLE);
-        mVoice.setVisibility(View.VISIBLE);
-        mTvLable.setVisibility(View.VISIBLE);
-
         //利用方法名获取资源 id
         int resId = mContext.getResources().getIdentifier("v" + level, "drawable", mContext.getPackageName());
         mVoice.setImageResource(resId);
