@@ -43,3 +43,6 @@
 
 ##[仿微信6.0主界面](https://github.com/Zhai-Wang/Practices/tree/master/weixin6.0/src/main)
 <img src="https://github.com/Zhai-Wang/Practices/blob/master/weixin6.0/screenshots/device-2016-12-28-164052.png" width="10%" height="10%">
+
+##[仿微信语音播放](https://github.com/Zhai-Wang/Practices/tree/master/wechattalk/src/main)
+<img src="https://github.com/Zhai-Wang/Practices/blob/master/wechattalk/screenshots/1.gif" width="10%" height="10%">
